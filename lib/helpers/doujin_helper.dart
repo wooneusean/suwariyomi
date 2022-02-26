@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class DoujinHelper {
   static Future<Doujin?> scrape(int id) async {
-    final html = await http.get(Uri.parse('https://www.nhentai.net/g/101113'));
+    final html = await http.get(Uri.parse('https://www.nhentai.net/g/$id'));
 
     final regExp = RegExp(r'(?:window\._gallery = JSON\.parse\((\".+?\")\);)');
 
