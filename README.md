@@ -1,16 +1,30 @@
 # Suwariyomi
 
-Suwariyomi - Sit and read
+Suwariyomi means to sit and read. Opposite of Tachiyomi which is to stand and read.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Install [Android Studio](https://developer.android.com/studio) (or any IDE you prefer) and [Flutter](https://docs.flutter.dev/get-started/install).
+2. Clone the repo with `git clone https://github.com/wooneusean/suwariyomi.git`
+3. Run `flutter pub get` to retrieve dependencies.
+4. Connect to Firebase*
+5. Use your phone or connect your IDE to an emulator
+6. Start making some changes
 
-A few resources to get you started if this is your first Flutter project:
+\* You can use the emulator or create your own Firebase project but make sure to put the API keys and whatnot into .env.example and rename it to .env.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Building
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Development Build
+The development build will be installed into your phone automatically when you start debugging.
+
+### Release Build
+You can install the development version of the app onto your phone through USB. Run this command in a terminal in your project location.
+```
+flutter clean
+flutter build apk --release
+flutter install
+```
+
+## Contributing
+Create a pull request with your changes linked to an issue or enhancement.
