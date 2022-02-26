@@ -12,6 +12,8 @@ class DoujinProvider {
     return _instance;
   }
 
+  DoujinProvider._internal() {}
+
   Future<String> getDbPath() async {
     var dir = await getApplicationDocumentsDirectory();
     await dir.create(recursive: true);
@@ -32,7 +34,7 @@ class DoujinProvider {
     var store = StoreRef.main();
     var db = await open();
 
-    var retrievedRecord = await store.record(101113).get(db);
+    var retrievedRecord = await store.record(id).get(db);
 
     if (retrievedRecord == null) throw Exception('Record with provided ID does not exist');
 
@@ -76,7 +78,7 @@ class DoujinProvider {
 
     await db.transaction((txn) async {
       data.forEach((doujin) async {
-        await store.record(doujin.id).put(db, doujin.toJson());
+        await store.record(doujin.id).put(txn, doujin.toJson());
       });
     });
   }
@@ -104,6 +106,4 @@ class DoujinProvider {
 
     if (deletedKey == null) throw Exception('Record does not exist');
   }
-
-  DoujinProvider._internal() {}
 }
