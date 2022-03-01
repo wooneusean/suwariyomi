@@ -111,6 +111,7 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
                               child: Card(
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: Image.network(
+                                  // TODO: For testing purposes, remove later
                                   'https://via.placeholder.com/500x500',
                                   // 'https://t.nhentai.net/galleries/${doujin?.mediaId}/cover.${doujin?.cover == 'j' ? 'jpg' : 'png'}',
                                   fit: BoxFit.cover,
