@@ -2,6 +2,16 @@
     "files.associations": {
         "iomanip": "cpp",
         "sstream": "cpp",
-        "xstring": "cpp"
-    }
+        "xstring": "cpp",
+        "iostream": "cpp",
+        "array": "cpp",
+        "chrono": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xtr1common": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }

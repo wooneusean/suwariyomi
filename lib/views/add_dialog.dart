@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../helpers/doujin_helper.dart';
@@ -14,6 +13,7 @@ class AddDialog extends StatefulWidget {
 
 class _AddDialogState extends State<AddDialog> {
   final nukeCodes = TextEditingController();
+  bool isButtonActive = true;
 
   SnackBar successSnackBar(doujin) => SnackBar(
         backgroundColor: Color.fromARGB(255, 67, 64, 73),
@@ -31,15 +31,38 @@ class _AddDialogState extends State<AddDialog> {
         duration: const Duration(milliseconds: 1500),
       );
 
+  SnackBar failedSnackBar(nukeCodes) => SnackBar(
+        backgroundColor: Color.fromARGB(255, 67, 64, 73),
+        content: Text(
+          nukeCodes + " not found",
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.all(20.0),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        duration: const Duration(milliseconds: 1500),
+      );
+
+  @override
+  void initState() {
+    super.initState();
+    nukeCodes.addListener(() {
+      final isButtonActive = nukeCodes.text.isNotEmpty;
+      setState(() {
+        this.isButtonActive = isButtonActive;
+      });
+    });
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    nukeCodes.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext dialogContext) {
     AlertDialog dialog = AlertDialog(
       //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       title: Row(
@@ -63,14 +86,22 @@ class _AddDialogState extends State<AddDialog> {
       actions: [
         TextButton(
           child: Text('SUBMIT'),
-          onPressed: () async {
-            var doujin =
-                await DoujinHelper.scrape(int.parse(nukeCodes.text.trim()));
-            // var doujinProvider = DoujinProvider();
-            // await doujinProvider.insert(doujin!);
-            Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(successSnackBar(doujin));
-          },
+          onPressed: nukeCodes.text.isNotEmpty
+              ? () async {
+                  try {
+                    var doujin = await DoujinHelper.scrape(
+                        int.parse(nukeCodes.text.trim()));
+                    // var doujinProvider = DoujinProvider();
+                    // await doujinProvider.insert(doujin!);
+                    Navigator.of(dialogContext).pop();
+                    ScaffoldMessenger.of(dialogContext)
+                        .showSnackBar(successSnackBar(doujin));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(failedSnackBar(nukeCodes.text.trim()));
+                  }
+                }
+              : null,
         )
       ],
     );
