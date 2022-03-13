@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_view_args.dart';
 import 'package:suwariyomi/classes/doujin.dart';
 import './doujin_cards.dart';
 
@@ -8,6 +9,7 @@ List<Doujin> doujins = [
   Doujin(dateAdded: 1023, uploadDate: 1231, cover: 'dasd', scanlator: null, rating: 3, mediaId: '1234647', id: 1234, title: null, tags: null ),
   Doujin(dateAdded: 1023, uploadDate: 1231, cover: 'dasd', scanlator: null, rating: 3, mediaId: '1234647', id: 1234, title: null, tags: null ),
 ];
+
 
 class LibraryPage extends StatefulWidget {
   LibraryPage({Key? key, required this.title}) : super(key: key);
@@ -97,7 +99,13 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
       body: DoujinCard(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          // TODO: For testing purposes, remove later
+          Navigator.of(context).pushNamed(
+            '/details',
+            arguments: DoujinDetailsViewArgs(101113),
+          );
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
