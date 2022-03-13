@@ -8,7 +8,7 @@ import 'app_router.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
 
   // make top bar transparent
   SystemChrome.setSystemUIOverlayStyle(
@@ -21,9 +21,9 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
 
   SystemChrome.setPreferredOrientations(
     [
