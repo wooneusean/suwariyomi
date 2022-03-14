@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:suwariyomi/classes/doujin.dart';
 
 class DoujinCards extends StatefulWidget {
   DoujinCards(
@@ -24,7 +23,6 @@ class DoujinCards extends StatefulWidget {
 class _DoujinCards extends State<DoujinCards> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       elevation: 3.0,
@@ -42,15 +40,18 @@ class _DoujinCards extends State<DoujinCards> {
                 // 'https://t.nhentai.net/galleries/${doujin?.mediaId}/cover.${doujin?.cover == 'j' ? 'jpg' : 'png'}'
               )),
           Container(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.fromLTRB(10.0, 1.0, 10.0, 10.0),
             alignment: Alignment.topLeft,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               verticalDirection: VerticalDirection.down,
               children: [
-                Text(widget.title),
-                Text('Rating Star : ${widget.rating}' )
+                Text(
+                  widget.title,
+                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold ),
+                ),
+                Text('Rating Star : ${widget.rating}'),
                 // TODO: Add star rating
               ],
             ),
