@@ -12,7 +12,7 @@ class AddDialog extends StatefulWidget {
 }
 
 class _AddDialogState extends State<AddDialog> {
-  final nukeCodes = TextEditingController();
+  final _nukeCode = TextEditingController();
   bool isButtonActive = true;
 
   SnackBar successSnackBar(doujin) => SnackBar(
@@ -31,24 +31,24 @@ class _AddDialogState extends State<AddDialog> {
         duration: const Duration(milliseconds: 1500),
       );
 
-  SnackBar failedSnackBar(nukeCodes) => SnackBar(
+  SnackBar failedSnackBar(_nukeCode, String errorMessage) => SnackBar(
         backgroundColor: Color.fromARGB(255, 67, 64, 73),
         content: Text(
-          nukeCodes + " not found",
+          _nukeCode + ' - ' + errorMessage,
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         behavior: SnackBarBehavior.floating,
         margin: EdgeInsets.all(20.0),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
-        duration: const Duration(milliseconds: 1500),
+        duration: const Duration(milliseconds: 2000),
       );
 
   @override
   void initState() {
     super.initState();
-    nukeCodes.addListener(() {
-      final isButtonActive = nukeCodes.text.isNotEmpty;
+    _nukeCode.addListener(() {
+      final isButtonActive = _nukeCode.text.isNotEmpty;
       setState(() {
         this.isButtonActive = isButtonActive;
       });
@@ -73,7 +73,7 @@ class _AddDialogState extends State<AddDialog> {
       ),
       content: Form(
         child: TextFormField(
-          controller: nukeCodes,
+          controller: _nukeCode,
           maxLength: 6,
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
           decoration: InputDecoration(hintText: '177013'),
@@ -86,19 +86,20 @@ class _AddDialogState extends State<AddDialog> {
       actions: [
         TextButton(
           child: Text('SUBMIT'),
-          onPressed: nukeCodes.text.isNotEmpty
+          onPressed: _nukeCode.text.isNotEmpty
               ? () async {
                   try {
                     var doujin = await DoujinHelper.scrape(
-                        int.parse(nukeCodes.text.trim()));
-                    // var doujinProvider = DoujinProvider();
-                    // await doujinProvider.insert(doujin!);
+                        int.parse(_nukeCode.text.trim()));
+                    var doujinProvider = DoujinProvider();
+                    await doujinProvider.insert(doujin!);
                     Navigator.of(dialogContext).pop();
                     ScaffoldMessenger.of(dialogContext)
                         .showSnackBar(successSnackBar(doujin));
                   } catch (e) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(failedSnackBar(nukeCodes.text.trim()));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        failedSnackBar(_nukeCode.text.trim(), e.toString()));
+                    Navigator.of(context).pop();
                   }
                 }
               : null,
