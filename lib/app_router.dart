@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_view.dart';
 import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_view_args.dart';
-import 'package:suwariyomi/views/library_view.dart';
+import 'package:suwariyomi/views/doujin/doujin_library/library_view.dart';
 
 import 'constants.dart';
 
