@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DoujinCards extends StatefulWidget {
   DoujinCards(
@@ -49,9 +50,17 @@ class _DoujinCards extends State<DoujinCards> {
               children: [
                 Text(
                   widget.title,
-                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold ),
+                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
                 ),
-                Text('Rating Star : ${widget.rating}'),
+                RatingBarIndicator(
+                  rating: widget.rating.toDouble(),
+                    itemCount: 5,
+                    itemSize: 20.0,
+                    direction: Axis.horizontal,
+                    itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        )),
                 // TODO: Add star rating
               ],
             ),
