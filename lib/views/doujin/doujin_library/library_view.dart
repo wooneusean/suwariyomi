@@ -3,8 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_view_args.dart';
 import 'package:suwariyomi/classes/doujin.dart';
-import '../../../providers/doujin_provider.dart';
-import 'doujin_cards.dart';
+import 'doujin_card.dart';
 
 class LibraryPage extends StatefulWidget {
   LibraryPage({Key? key, required this.title}) : super(key: key);
@@ -176,12 +175,14 @@ class _LibraryPageState extends State<LibraryPage> {
           final item = doujins?[index];
 
           return GridTile(
-              child: DoujinCards(
-                  cover: '123123',
-                  mediaId: '123122',
-                  title: 'hasbdyb asd vb',
-                  rating: 4,
-                  id: 123123));
+            child: DoujinCard(
+                cover: item?.cover ?? 'Error',
+                mediaId: item?.mediaId ?? 'Error',
+                //TODO: change string to title
+                title: item?.title.toString() ?? 'hasbdyb asd vb',
+                rating: item?.rating ?? 4,
+                id: item?.id ?? 123123),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(

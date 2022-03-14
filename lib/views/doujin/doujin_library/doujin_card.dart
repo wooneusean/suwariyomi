@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class DoujinCards extends StatefulWidget {
-  DoujinCards(
+class DoujinCard extends StatefulWidget {
+  DoujinCard(
       {Key? key,
       required this.cover,
       required this.mediaId,
@@ -18,10 +18,10 @@ class DoujinCards extends StatefulWidget {
   final int id;
 
   @override
-  State<DoujinCards> createState() => _DoujinCards();
+  State<DoujinCard> createState() => _DoujinCards();
 }
 
-class _DoujinCards extends State<DoujinCards> {
+class _DoujinCards extends State<DoujinCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -31,15 +31,21 @@ class _DoujinCards extends State<DoujinCards> {
       child: Column(
         children: [
           Container(
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
-              padding: EdgeInsets.all(5.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.network('https://via.placeholder.com/500x500'),
-                // TODO: For testing purposes, remove later
-                // 'https://t.nhentai.net/galleries/${doujin?.mediaId}/cover.${doujin?.cover == 'j' ? 'jpg' : 'png'}'
-              )),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+            padding: EdgeInsets.all(5.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.network(
+                'https://via.placeholder.com/500x500',
+                height: 160,
+                width: 160,
+                fit: BoxFit.cover,
+              ),
+              // TODO: For testing purposes, remove later
+              // 'https://t.nhentai.net/galleries/${doujin?.mediaId}/cover.${doujin?.cover == 'j' ? 'jpg' : 'png'}'
+            ),
+          ),
           Container(
             padding: EdgeInsets.fromLTRB(10.0, 1.0, 10.0, 10.0),
             alignment: Alignment.topLeft,
@@ -54,13 +60,14 @@ class _DoujinCards extends State<DoujinCards> {
                 ),
                 RatingBarIndicator(
                   rating: widget.rating.toDouble(),
-                    itemCount: 5,
-                    itemSize: 20.0,
-                    direction: Axis.horizontal,
-                    itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        )),
+                  itemCount: 5,
+                  itemSize: 20.0,
+                  direction: Axis.horizontal,
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                ),
                 // TODO: Add star rating
               ],
             ),
