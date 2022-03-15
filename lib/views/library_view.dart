@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_view_args.dart';
+import 'package:flutter/services.dart';
+import 'package:suwariyomi/views/add_dialog.dart';
 
 class LibraryPage extends StatefulWidget {
   LibraryPage({Key? key, required this.title}) : super(key: key);
@@ -63,11 +65,7 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: For testing purposes, remove later
-          Navigator.of(context).pushNamed(
-            '/details',
-            arguments: DoujinDetailsViewArgs(101113),
-          );
+          showDialog(context: context, builder: (context) => AddDialog());
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
