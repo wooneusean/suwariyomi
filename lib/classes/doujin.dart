@@ -75,22 +75,6 @@ class Doujin {
   }
 }
 
-class Image {
-  String? t;
-
-  Image({this.t});
-
-  Image.fromJson(Map<dynamic, dynamic> json) {
-    t = json['t'];
-  }
-
-  Map<dynamic, dynamic> toJson() {
-    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
-    data['t'] = this.t;
-    return data;
-  }
-}
-
 class Title {
   String? pretty;
   String? japanese;
