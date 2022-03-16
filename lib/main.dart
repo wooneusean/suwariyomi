@@ -42,10 +42,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         brightness: Brightness.light,
+        fontFamily: 'LeagueSpartan',
       ),
       darkTheme: ThemeData(
         primarySwatch: Colors.deepPurple,
         brightness: Brightness.dark,
+        fontFamily: 'LeagueSpartan',
       ),
       themeMode: ThemeMode.system,
       title: Constants.APP_TITLE,
