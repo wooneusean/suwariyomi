@@ -12,7 +12,7 @@ class DoujinProvider {
     return _instance;
   }
 
-  DoujinProvider._internal() {}
+  DoujinProvider._internal();
 
   Future<String> getDbPath() async {
     var dir = await getApplicationDocumentsDirectory();
@@ -65,12 +65,12 @@ class DoujinProvider {
     doujin.dateAdded = DateTime.now().millisecondsSinceEpoch;
     doujin.rating = 0;
 
-    var recordExists = await store.record(key ?? doujin.id!).get(db) != null;
+    var recordExists = await store.record(key ?? doujin.id).get(db) != null;
 
     if (recordExists) throw Exception('Record already exists in database');
 
     var storedRecord =
-        await store.record(key ?? doujin.id!).put(db, doujin.toJson());
+        await store.record(key ?? doujin.id).put(db, doujin.toJson());
 
     await db.close();
 

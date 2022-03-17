@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:suwariyomi/classes/doujin.dart';
 
 import '../doujin_details/doujin_details_view_args.dart';
 
-class DoujinCard extends StatefulWidget {
+class DoujinCard extends StatelessWidget {
   DoujinCard(
-      {Key? key,
-      required this.cover,
-      required this.mediaId,
-      required this.title,
-      required this.rating,
-      required this.id})
-      : super(key: key);
+    this.doujin,
+    this.callback, {
+    Key? key,
+  }) : super(key: key);
 
-  final String cover;
-  final String title;
-  final int rating;
-  final String mediaId;
-  final int id;
+  final Doujin doujin;
+  final Function callback;
 
-  @override
-  State<DoujinCard> createState() => _DoujinCards();
-}
-
-class _DoujinCards extends State<DoujinCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -37,7 +27,8 @@ class _DoujinCards extends State<DoujinCard> {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
-                  'https://t.nhentai.net/galleries/${widget.mediaId}/cover.${widget.cover == 'j' ? 'jpg' : 'png'}'),
+                doujin.getCoverUrl(),
+              ),
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
             ),
@@ -47,10 +38,7 @@ class _DoujinCards extends State<DoujinCard> {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.center,
-                colors: [
-                  Colors.black.withOpacity(0.9),
-                  Colors.black.withOpacity(0)
-                ],
+                colors: [Colors.black.withOpacity(0.9), Colors.black.withOpacity(0)],
               ),
             ),
             child: Column(
@@ -66,18 +54,15 @@ class _DoujinCards extends State<DoujinCard> {
                     verticalDirection: VerticalDirection.down,
                     children: [
                       Text(
-                        widget.title,
+                        doujin.title.pretty,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
                         child: RatingBarIndicator(
-                          rating: widget.rating.toDouble(),
+                          rating: doujin.rating.toDouble(),
                           itemCount: 5,
                           itemSize: 20.0,
                           direction: Axis.horizontal,
@@ -98,7 +83,7 @@ class _DoujinCards extends State<DoujinCard> {
       onTap: () => {
         Navigator.of(context).pushNamed(
           '/details',
-          arguments: DoujinDetailsViewArgs(widget.id),
+          arguments: DoujinDetailsViewArgs(doujin.id, callback),
         )
       },
     );

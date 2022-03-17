@@ -23,7 +23,7 @@ void main() {
 
       print(insertedDoujin);
 
-      t.expect(insertedDoujin.id!, doujin.id);
+      t.expect(insertedDoujin.id, doujin.id);
     }, skip: "Re-enable when testing this part, skipped to improve testing speed.");
 
     t.test("Doujin should be updated", () async {

@@ -1,10 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_view_args.dart';
+import 'package:suwariyomi/views/doujin/doujin_library/add_dialog.dart';
 import 'package:suwariyomi/classes/doujin.dart';
 import '../../../providers/doujin_provider.dart';
 import 'doujin_card.dart';
@@ -89,9 +88,7 @@ class _LibraryPageState extends State<LibraryPage> {
 
     data.map((e) => debugPrint(e.toString()));
 
-    doujinProvider
-        .retrieveAll()
-        .then((value) => {debugPrint(value.length.toString())});
+    doujinProvider.retrieveAll().then((value) => {debugPrint(value.length.toString())});
 
     return data;
   }
@@ -133,12 +130,12 @@ class _LibraryPageState extends State<LibraryPage> {
       ),
       body: isLoading
           ? Container(
-        padding: EdgeInsets.only(
-          top: 15.0,
-        ),
-        alignment: Alignment.topCenter,
-            child: CircularProgressIndicator(),
-      )
+              padding: EdgeInsets.only(
+                top: 15.0,
+              ),
+              alignment: Alignment.topCenter,
+              child: CircularProgressIndicator(),
+            )
           : doujins == null || doujins?.length == 0
               ?
               // If Doujins does not exist
@@ -156,34 +153,29 @@ class _LibraryPageState extends State<LibraryPage> {
               :
               // If Doujins exist
               GridView.builder(
-                padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(10.0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 8.0,
                     crossAxisSpacing: 10.0,
-                    childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 1.3),
+                    childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.3),
                   ),
                   itemCount: doujins?.length ?? 0,
                   itemBuilder: (context, index) {
                     final item = doujins?[index];
 
                     return GridTile(
-                      child: DoujinCard(
-                          cover: item?.cover ?? 'Error',
-                          mediaId: item?.mediaId ?? 'Error',
-                          title: item?.title.toString() ?? 'Error',
-                          rating: item?.rating ?? 4,
-                          id: item?.id ?? 123123),
+                      child: DoujinCard(item!, _retrieveDoujins),
                     );
                   },
                 ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // TODO: For testing purposes, remove later
-          Navigator.of(context).pushNamed(
-            '/details',
-            arguments: DoujinDetailsViewArgs(101113),
+          showDialog(
+            context: context,
+            builder: (context) => AddDialog(
+              callback: _retrieveDoujins,
+            ),
           );
         },
         tooltip: 'Increment',

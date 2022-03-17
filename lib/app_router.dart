@@ -17,9 +17,12 @@ class AppRouter {
 
       case '/details':
         return MaterialPageRoute(
-          builder: (_) => DoujinDetailsPage(
-            doujinId: (settings.arguments as DoujinDetailsViewArgs).id,
-          ),
+          builder: (_) {
+            var doujinDetailsArgs = (settings.arguments as DoujinDetailsViewArgs);
+            return DoujinDetailsPage(
+              args: doujinDetailsArgs,
+            );
+          },
         );
 
       default:

@@ -1,41 +1,42 @@
 class Doujin {
-  int? dateAdded;
-  String? cover;
-  String? scanlator;
-  int? rating;
-  String? mediaId;
-  int? id;
-  Title? title;
-  List<Tag>? tags;
-  int? uploadDate;
+  late int dateAdded;
+  late String cover;
+  late String scanlator;
+  late int rating;
+  late String mediaId;
+  late int id;
+  late Title title;
+  late List<Tag> tags;
+  late int uploadDate;
 
-  Doujin(
-      {this.dateAdded,
-      this.cover,
-      this.scanlator,
-      this.rating,
-      this.mediaId,
-      this.id,
-      this.title,
-      this.tags,
-      this.uploadDate});
+  Doujin({
+    required this.dateAdded,
+    required this.cover,
+    required this.scanlator,
+    required this.rating,
+    required this.mediaId,
+    required this.id,
+    required this.title,
+    required this.tags,
+    required this.uploadDate,
+  });
 
   Doujin.fromJson(Map<dynamic, dynamic> json) {
-    dateAdded = json['date_added'];
+    dateAdded = (DateTime.now().millisecondsSinceEpoch / 1000).round();
     cover = json['images'] != null
         ? json['images']['cover']['t']
         : json['cover'] != null
             ? json['cover']
             : null;
     scanlator = json['scanlator'];
-    rating = json['rating'];
+    rating = 0;
     mediaId = json['media_id'];
     id = json['id'];
-    title = json['title'] != null ? new Title.fromJson(json['title']) : null;
+    title = new Title.fromJson(json['title']);
     if (json['tags'] != null) {
       tags = <Tag>[];
       json['tags'].forEach((v) {
-        tags!.add(new Tag.fromJson(v));
+        tags.add(new Tag.fromJson(v));
       });
     }
     uploadDate = json['upload_date'];
@@ -49,14 +50,14 @@ class Doujin {
     data['rating'] = this.rating;
     data['media_id'] = this.mediaId;
     data['id'] = this.id;
-    if (this.title != null) {
-      data['title'] = this.title!.toJson();
-    }
-    if (this.tags != null) {
-      data['tags'] = this.tags!.map((v) => v.toJson()).toList();
-    }
+    data['title'] = this.title.toJson();
+    data['tags'] = this.tags.map((v) => v.toJson()).toList();
     data['upload_date'] = this.uploadDate;
     return data;
+  }
+
+  String getCoverUrl() {
+    return 'https://t.nhentai.net/galleries/$mediaId/cover.${cover == 'j' ? 'jpg' : 'png'}';
   }
 
   @override
@@ -76,11 +77,11 @@ class Doujin {
 }
 
 class Title {
-  String? pretty;
-  String? japanese;
-  String? english;
+  late String pretty;
+  late String japanese;
+  late String english;
 
-  Title({this.pretty, this.japanese, this.english});
+  Title({required this.pretty, required this.japanese, required this.english});
 
   Title.fromJson(Map<dynamic, dynamic> json) {
     pretty = json['pretty'];
@@ -103,10 +104,10 @@ class Title {
 }
 
 class Tag {
-  String? name;
-  String? type;
+  late String name;
+  late String type;
 
-  Tag({this.name, this.type});
+  Tag({required this.name, required this.type});
 
   Tag.fromJson(Map<dynamic, dynamic> json) {
     name = json['name'];

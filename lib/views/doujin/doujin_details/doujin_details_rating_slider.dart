@@ -37,8 +37,8 @@ class DoujinDetailsRatingSlider extends StatelessWidget {
               Expanded(
                 child: Slider(
                   value: this.ratingSliderValue,
-                  max: 10,
-                  divisions: 10,
+                  max: 5,
+                  divisions: 5,
                   label: this.ratingSliderValue.round().toString(),
                   onChanged: this.notifyRatingChanged,
                 ),
