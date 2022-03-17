@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import '../doujin_details/doujin_details_view_args.dart';
+
 class DoujinCard extends StatefulWidget {
   DoujinCard(
       {Key? key,
@@ -24,57 +26,78 @@ class DoujinCard extends StatefulWidget {
 class _DoujinCards extends State<DoujinCard> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      elevation: 3.0,
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          Container(
-            decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
-            padding: EdgeInsets.all(5.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                'https://via.placeholder.com/500x500',
-                height: 160,
-                width: 160,
-                fit: BoxFit.cover,
-              ),
-              // TODO: For testing purposes, remove later
-              // 'https://t.nhentai.net/galleries/${doujin?.mediaId}/cover.${doujin?.cover == 'j' ? 'jpg' : 'png'}'
+    return GestureDetector(
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 3.0,
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(
+                  'https://t.nhentai.net/galleries/${widget.mediaId}/cover.${widget.cover == 'j' ? 'jpg' : 'png'}'),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
           ),
-          Container(
-            padding: EdgeInsets.fromLTRB(10.0, 1.0, 10.0, 10.0),
-            alignment: Alignment.topLeft,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.center,
+                colors: [
+                  Colors.black.withOpacity(0.3),
+                  Colors.black.withOpacity(0)
+                ],
+              ),
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              verticalDirection: VerticalDirection.down,
               children: [
-                Text(
-                  widget.title,
-                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                SizedBox(
+                  height: (MediaQuery.of(context).size.height / 3.5),
                 ),
-                RatingBarIndicator(
-                  rating: widget.rating.toDouble(),
-                  itemCount: 5,
-                  itemSize: 20.0,
-                  direction: Axis.horizontal,
-                  itemBuilder: (context, index) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
+                FractionallySizedBox(
+                  widthFactor: 0.8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    verticalDirection: VerticalDirection.down,
+                    children: [
+                      Text(
+                        widget.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                      RatingBarIndicator(
+                        rating: widget.rating.toDouble(),
+                        itemCount: 5,
+                        itemSize: 20.0,
+                        direction: Axis.horizontal,
+                        itemBuilder: (context, index) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                // TODO: Add star rating
+                )
               ],
             ),
-          )
-        ],
+          ),
+        ),
       ),
-      // TODO: Add on click event to move to details page
+      onTap: () => {
+        Navigator.of(context).pushNamed(
+          '/details',
+          arguments: DoujinDetailsViewArgs(widget.id),
+        )
+      },
     );
   }
 }

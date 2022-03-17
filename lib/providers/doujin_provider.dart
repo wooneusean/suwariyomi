@@ -36,7 +36,8 @@ class DoujinProvider {
 
     var retrievedRecord = await store.record(id).get(db);
 
-    if (retrievedRecord == null) throw Exception('Record with provided ID does not exist');
+    if (retrievedRecord == null)
+      throw Exception('Record with provided ID does not exist');
 
     db.close();
 
@@ -47,7 +48,9 @@ class DoujinProvider {
     var store = StoreRef.main();
     var db = await open();
 
-    var records = (await store.find(db, finder: finder)).map((e) => Doujin.fromJson(e.value)).toList();
+    var records = (await store.find(db, finder: finder))
+        .map((e) => Doujin.fromJson(e.value))
+        .toList();
 
     return records;
   }
@@ -56,7 +59,8 @@ class DoujinProvider {
     var store = StoreRef.main();
     var db = await open();
 
-    if (key == null && doujin.id == null) throw Exception('Both provided key and Record ID is null');
+    if (key == null && doujin.id == null)
+      throw Exception('Both provided key and Record ID is null');
 
     doujin.dateAdded = DateTime.now().millisecondsSinceEpoch;
     doujin.rating = 0;
@@ -65,7 +69,8 @@ class DoujinProvider {
 
     if (recordExists) throw Exception('Record already exists in database');
 
-    var storedRecord = await store.record(key ?? doujin.id!).put(db, doujin.toJson());
+    var storedRecord =
+        await store.record(key ?? doujin.id!).put(db, doujin.toJson());
 
     await db.close();
 
@@ -77,9 +82,15 @@ class DoujinProvider {
     var db = await open();
 
     await db.transaction((txn) async {
-      data.forEach((doujin) async {
-        await store.record(doujin.id).put(txn, doujin.toJson());
-      });
+      await Future.wait(data.map((e) {
+        return store.record(e.id).put(txn, e.toJson());
+      }));
+
+      //     async {
+      //   if (doujin == null)
+      //     return;
+      //   await store.record(doujin.id).put(txn, doujin.toJson());
+      // });
     });
   }
 
