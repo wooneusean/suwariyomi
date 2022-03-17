@@ -22,7 +22,7 @@ class Doujin {
   });
 
   Doujin.fromJson(Map<dynamic, dynamic> json) {
-    dateAdded = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+    dateAdded = DateTime.now().millisecondsSinceEpoch;
     cover = json['images'] != null
         ? json['images']['cover']['t']
         : json['cover'] != null
