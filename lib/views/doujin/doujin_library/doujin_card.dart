@@ -48,7 +48,7 @@ class _DoujinCards extends State<DoujinCard> {
                 begin: Alignment.bottomCenter,
                 end: Alignment.center,
                 colors: [
-                  Colors.black.withOpacity(0.3),
+                  Colors.black.withOpacity(0.9),
                   Colors.black.withOpacity(0)
                 ],
               ),
@@ -74,14 +74,17 @@ class _DoujinCards extends State<DoujinCard> {
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      RatingBarIndicator(
-                        rating: widget.rating.toDouble(),
-                        itemCount: 5,
-                        itemSize: 20.0,
-                        direction: Axis.horizontal,
-                        itemBuilder: (context, index) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: RatingBarIndicator(
+                          rating: widget.rating.toDouble(),
+                          itemCount: 5,
+                          itemSize: 20.0,
+                          direction: Axis.horizontal,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
                         ),
                       ),
                     ],

@@ -51,6 +51,7 @@ class _LibraryPageState extends State<LibraryPage> {
           await doujinProvider.deleteDb();
           await seedDb().then((value) {
             doujins = value;
+            isLoading = false;
           });
         }
       }
@@ -131,7 +132,13 @@ class _LibraryPageState extends State<LibraryPage> {
         ),
       ),
       body: isLoading
-          ? CircularProgressIndicator()
+          ? Container(
+        padding: EdgeInsets.only(
+          top: 15.0,
+        ),
+        alignment: Alignment.topCenter,
+            child: CircularProgressIndicator(),
+      )
           : doujins == null || doujins?.length == 0
               ?
               // If Doujins does not exist
@@ -149,10 +156,11 @@ class _LibraryPageState extends State<LibraryPage> {
               :
               // If Doujins exist
               GridView.builder(
+                padding: EdgeInsets.all(10.0),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    mainAxisSpacing: 1.0,
-                    crossAxisSpacing: 2.0,
+                    mainAxisSpacing: 8.0,
+                    crossAxisSpacing: 10.0,
                     childAspectRatio: MediaQuery.of(context).size.width /
                         (MediaQuery.of(context).size.height / 1.3),
                   ),
