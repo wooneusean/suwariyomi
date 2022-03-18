@@ -12,7 +12,7 @@ class DoujinProvider {
     return _instance;
   }
 
-  DoujinProvider._internal() {}
+  DoujinProvider._internal();
 
   Future<String> getDbPath() async {
     var dir = await getApplicationDocumentsDirectory();
@@ -52,20 +52,18 @@ class DoujinProvider {
     return records;
   }
 
-  Future<Doujin> insert(Doujin doujin, {int? key}) async {
+  Future<Doujin> insert(Doujin doujin) async {
     var store = StoreRef.main();
     var db = await open();
-
-    if (key == null && doujin.id == null) throw Exception('Both provided key and Record ID is null');
 
     doujin.dateAdded = DateTime.now().millisecondsSinceEpoch;
     doujin.rating = 0;
 
-    var recordExists = await store.record(key ?? doujin.id!).get(db) != null;
+    var recordExists = await store.record(doujin.id).get(db) != null;
 
     if (recordExists) throw Exception('Record already exists in database');
 
-    var storedRecord = await store.record(key ?? doujin.id!).put(db, doujin.toJson());
+    var storedRecord = await store.record(doujin.id).put(db, doujin.toJson());
 
     await db.close();
 
@@ -77,9 +75,9 @@ class DoujinProvider {
     var db = await open();
 
     await db.transaction((txn) async {
-      data.forEach((doujin) async {
-        await store.record(doujin.id).put(txn, doujin.toJson());
-      });
+      await Future.wait(data.map((e) {
+        return store.record(e.id).put(txn, e.toJson());
+      }));
     });
   }
 

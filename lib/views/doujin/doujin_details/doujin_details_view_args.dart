@@ -1,5 +1,6 @@
 class DoujinDetailsViewArgs {
   int id;
+  Function callback;
 
-  DoujinDetailsViewArgs(this.id);
+  DoujinDetailsViewArgs(this.id, this.callback);
 }

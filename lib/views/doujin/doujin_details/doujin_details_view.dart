@@ -3,19 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:suwariyomi/providers/doujin_provider.dart';
 import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_label.dart';
 import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_rating_slider.dart';
+import 'package:suwariyomi/views/doujin/doujin_details/doujin_details_view_args.dart';
 import '../../../classes/doujin.dart';
 
 class DoujinDetailsPage extends StatefulWidget {
-  final int doujinId;
+  final DoujinDetailsViewArgs args;
 
-  const DoujinDetailsPage({Key? key, required this.doujinId}) : super(key: key);
+  const DoujinDetailsPage({Key? key, required this.args}) : super(key: key);
 
-  @override
   _DoujinDetailsPageState createState() => _DoujinDetailsPageState();
 }
 
 class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
-  Doujin? doujin;
+  late Doujin doujin;
   bool isLoading = true;
   double _ratingSliderValue = 0;
 
@@ -26,16 +26,12 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
       isLoading = true;
     });
     var doujinProvider = DoujinProvider();
-    if (widget.doujinId == null) {
-      Navigator.of(context).pop();
-      return;
-    }
 
-    doujinProvider.retrieve(widget.doujinId).then((value) {
+    doujinProvider.retrieve(widget.args.id).then((value) {
       setState(() {
         doujin = value;
         isLoading = false;
-        _ratingSliderValue = value.rating?.toDouble() ?? 0.0;
+        _ratingSliderValue = value.rating.toDouble();
       });
     });
   }
@@ -48,28 +44,29 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
 
   void _updateRating() async {
     var doujinProvider = DoujinProvider();
-    doujin?.rating = _ratingSliderValue.round();
-    await doujinProvider.update(widget.doujinId, doujin!);
+    doujin.rating = _ratingSliderValue.round();
+    await doujinProvider.update(widget.args.id, doujin);
     setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Saved changes to this doujin."),
       ),
     );
+    widget.args.callback();
   }
 
   List<String?> _getArtists() {
-    return doujin?.tags?.where((element) => element.type == "artist").map((e) => e.name).toList() ?? [];
+    return doujin.tags.where((element) => element.type == "artist").map((e) => e.name).toList();
   }
 
   List<String?> _getTags() {
-    return doujin?.tags?.where((element) => element.type == "tag").map((e) => e.name).toList() ?? [];
+    return doujin.tags.where((element) => element.type == "tag").map((e) => e.name).toList();
   }
 
   void _copyCodeToClipboard() async {
     await Clipboard.setData(
       ClipboardData(
-        text: (doujin?.id ?? '').toString(),
+        text: (doujin.id).toString(),
       ),
     );
     ScaffoldMessenger.of(context).showSnackBar(
@@ -111,9 +108,12 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
                               child: Card(
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: Image.network(
-                                  // TODO: For testing purposes, remove later
-                                  'https://via.placeholder.com/500x500',
-                                  // 'https://t.nhentai.net/galleries/${doujin?.mediaId}/cover.${doujin?.cover == 'j' ? 'jpg' : 'png'}',
+                                  doujin.getCoverUrl(),
+                                  errorBuilder: (_, __, ___) {
+                                    return Center(
+                                      child: Text("No Image"),
+                                    );
+                                  },
                                   fit: BoxFit.cover,
                                 ),
                                 elevation: 4,
@@ -129,30 +129,45 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   DoujinDetailsLabel(label: "English"),
-                                  Text(doujin?.title?.english ?? ''),
+                                  Text(
+                                    doujin.title.english,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                   DoujinDetailsLabel(label: "Japanese"),
-                                  Text(doujin?.title?.japanese ?? ''),
+                                  Text(
+                                    doujin.title.japanese,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                   DoujinDetailsLabel(label: "Pretty"),
-                                  Text(doujin?.title?.pretty ?? ''),
+                                  Text(
+                                    doujin.title.pretty,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
                                   DoujinDetailsLabel(label: "Artist(s)"),
                                   Wrap(
                                     children: [
                                       ..._getArtists().map(
-                                        (e) => Text(e ?? ''),
+                                        (e) => Text(
+                                          e ?? '',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ],
                                   ),
                                   DoujinDetailsLabel(label: "Nuke Code"),
                                   GestureDetector(
                                     child: Text(
-                                      (doujin?.id ?? '').toString(),
-                                      style: _hyperlink,
+                                      (doujin.id).toString(),
+                                      style: _hyperlink.merge(
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                     onTap: _copyCodeToClipboard,
                                   ),
                                   DoujinDetailsLabel(label: "Date Added"),
                                   Text(
-                                    DateTime.fromMillisecondsSinceEpoch(doujin?.dateAdded ?? 0).toString(),
+                                    DateTime.fromMillisecondsSinceEpoch(doujin.dateAdded).toString(),
+                                    style: TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
