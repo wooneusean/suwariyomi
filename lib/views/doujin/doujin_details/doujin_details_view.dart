@@ -109,6 +109,11 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
                                 clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: Image.network(
                                   doujin.getCoverUrl(),
+                                  errorBuilder: (_, __, ___) {
+                                    return Center(
+                                      child: Text("No Image"),
+                                    );
+                                  },
                                   fit: BoxFit.cover,
                                 ),
                                 elevation: 4,

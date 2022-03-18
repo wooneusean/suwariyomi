@@ -22,14 +22,14 @@ class Doujin {
   });
 
   Doujin.fromJson(Map<dynamic, dynamic> json) {
-    dateAdded = DateTime.now().millisecondsSinceEpoch;
+    dateAdded = json['date_added'] ?? DateTime.now().millisecondsSinceEpoch;
     cover = json['images'] != null
         ? json['images']['cover']['t']
         : json['cover'] != null
             ? json['cover']
             : null;
     scanlator = json['scanlator'];
-    rating = 0;
+    rating = json['rating'] ?? 0;
     mediaId = json['media_id'];
     id = json['id'];
     title = new Title.fromJson(json['title']);
