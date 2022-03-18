@@ -5,8 +5,6 @@ import 'package:suwariyomi/constants.dart';
 import 'app_router.dart';
 
 void main() async {
-  // await dotenv.load(fileName: ".env");
-
   // make top bar transparent
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -17,10 +15,6 @@ void main() async {
   );
 
   WidgetsFlutterBinding.ensureInitialized();
-
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
 
   SystemChrome.setPreferredOrientations(
     [
