@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Doujin {
   late int dateAdded;
   late String cover;
@@ -57,7 +59,9 @@ class Doujin {
   }
 
   String getCoverUrl() {
-    return 'https://t.nhentai.net/galleries/$mediaId/cover.${cover == 'j' ? 'jpg' : 'png'}';
+    return kDebugMode
+        ? 'https://via.placeholder.com/250x350'
+        : 'https://t.nhentai.net/galleries/$mediaId/cover.${cover == 'j' ? 'jpg' : 'png'}';
   }
 
   @override
