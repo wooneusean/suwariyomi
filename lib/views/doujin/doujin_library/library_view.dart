@@ -145,10 +145,10 @@ class _LibraryPageState extends State<LibraryPage> {
               ?
               // If Doujins does not exist
               Center(
-                  child: FractionallySizedBox(
-                    widthFactor: 0.7,
+                  child: Padding(
+                    padding: const EdgeInsets.all(64.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           'Your library is empty',
@@ -159,17 +159,14 @@ class _LibraryPageState extends State<LibraryPage> {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        FractionallySizedBox(
-                          widthFactor: 0.7,
-                          child: Text(
-                            'Add one by pressing the \"\+\" button on the bottom right',
-                            style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.grey[400],
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
+                        Text(
+                          'Add one by pressing the \"\+\" button on the bottom right',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.grey[600],
+                            fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.center,
                         )
                       ],
                     ),

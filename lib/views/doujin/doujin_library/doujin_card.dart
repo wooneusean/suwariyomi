@@ -22,7 +22,7 @@ class DoujinCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(15.0),
         ),
         elevation: 3.0,
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
@@ -34,47 +34,38 @@ class DoujinCard extends StatelessWidget {
             ),
           ),
           child: Container(
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.center,
-                colors: [Colors.black.withOpacity(0.9), Colors.black.withOpacity(0)],
+                stops: [0, 0.60],
+                colors: [Colors.black.withOpacity(0.75), Colors.black.withOpacity(0)],
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(
-                  height: (MediaQuery.of(context).size.height / 3.5),
+                Text(
+                  doujin.title.pretty,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                FractionallySizedBox(
-                  widthFactor: 0.8,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    verticalDirection: VerticalDirection.down,
-                    children: [
-                      Text(
-                        doujin.title.pretty,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
-                      ),
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: RatingBarIndicator(
-                          rating: doujin.rating.toDouble(),
-                          itemCount: 5,
-                          itemSize: 20.0,
-                          direction: Axis.horizontal,
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                        ),
-                      ),
-                    ],
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: RatingBarIndicator(
+                    rating: doujin.rating.toDouble(),
+                    itemCount: 5,
+                    itemSize: 20.0,
+                    direction: Axis.horizontal,
+                    itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
                   ),
-                )
+                ),
               ],
             ),
           ),
