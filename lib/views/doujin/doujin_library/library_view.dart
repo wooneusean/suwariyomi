@@ -153,7 +153,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       'Your library is empty',
                       style: TextStyle(
                         fontSize: 23.0,
-                        color: Colors.grey[400],
+                        color: Colors.grey.withOpacity(0.8),
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
@@ -162,7 +162,7 @@ class _LibraryPageState extends State<LibraryPage> {
                       'Add one by pressing the \"\+\" button on the bottom right',
                       style: TextStyle(
                         fontSize: 15.0,
-                        color: Colors.grey[600],
+                        color: Colors.grey.withOpacity(0.5),
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
