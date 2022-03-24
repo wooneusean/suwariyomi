@@ -144,34 +144,32 @@ class _LibraryPageState extends State<LibraryPage> {
           : doujins == null || doujins?.length == 0
               ?
               // If Doujins does not exist
-              Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(64.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Your library is empty',
-                          style: TextStyle(
-                            fontSize: 23.0,
-                            color: Colors.grey[400],
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          'Add one by pressing the \"\+\" button on the bottom right',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color: Colors.grey[600],
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      ],
+              Padding(
+                padding: const EdgeInsets.all(64.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Your library is empty',
+                      style: TextStyle(
+                        fontSize: 23.0,
+                        color: Colors.grey[400],
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                )
+                    Text(
+                      'Add one by pressing the \"\+\" button on the bottom right',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
+              )
               :
               // If Doujins exist
               GridView.builder(
