@@ -91,7 +91,9 @@ class _LibraryPageState extends State<LibraryPage> {
 
     data.map((e) => debugPrint(e.toString()));
 
-    doujinProvider.retrieveAll().then((value) => {debugPrint(value.length.toString())});
+    doujinProvider
+        .retrieveAll()
+        .then((value) => {debugPrint(value.length.toString())});
 
     return data;
   }
@@ -144,12 +146,32 @@ class _LibraryPageState extends State<LibraryPage> {
               // If Doujins does not exist
               Center(
                   child: FractionallySizedBox(
-                    alignment: Alignment.topCenter,
-                    widthFactor: 0.5,
-                    child: Text(
-                      'You currently do not have any doujins as favourite',
-                      style: TextStyle(fontSize: 20.0, color: Colors.grey),
-                      textAlign: TextAlign.center,
+                    widthFactor: 0.7,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Your library is empty',
+                          style: TextStyle(
+                            fontSize: 23.0,
+                            color: Colors.grey[400],
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        FractionallySizedBox(
+                          widthFactor: 0.7,
+                          child: Text(
+                            'Add one by pressing the \"\+\" button on the bottom right',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.grey[400],
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 )
@@ -161,7 +183,8 @@ class _LibraryPageState extends State<LibraryPage> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 8.0,
                     crossAxisSpacing: 10.0,
-                    childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.3),
+                    childAspectRatio: MediaQuery.of(context).size.width /
+                        (MediaQuery.of(context).size.height / 1.3),
                   ),
                   itemCount: doujins?.length ?? 0,
                   itemBuilder: (context, index) {
