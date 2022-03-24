@@ -37,6 +37,7 @@ class _LibraryPageState extends State<LibraryPage> {
           });
         } else {
           doujins = null;
+          isLoading = false;
         }
       } else {
         // Debug App
