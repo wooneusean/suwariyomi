@@ -11,6 +11,7 @@ class AppRouter {
       case '/':
         return MaterialPageRoute(
           builder: (_) => LibraryPage(
+            key: Constants.HOME_KEY,
             title: Constants.APP_TITLE,
           ),
         );
