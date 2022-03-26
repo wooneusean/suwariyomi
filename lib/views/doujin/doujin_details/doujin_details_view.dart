@@ -8,12 +8,10 @@ import 'package:suwariyomi/constants.dart';
 import 'package:suwariyomi/providers/doujin_provider.dart';
 import 'package:suwariyomi/views/doujin/doujin_details/update_doujin_rating_dialog.dart';
 
-import 'doujin_details_view_args.dart';
-
 class DoujinDetailsPage extends StatefulWidget {
-  final DoujinDetailsViewArgs args;
+  final int id;
 
-  const DoujinDetailsPage({Key? key, required this.args}) : super(key: key);
+  const DoujinDetailsPage({Key? key, required this.id}) : super(key: key);
 
   @override
   State<DoujinDetailsPage> createState() => _DoujinDetailsPageState();
@@ -22,6 +20,12 @@ class DoujinDetailsPage extends StatefulWidget {
 class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
   late Doujin doujin;
   bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _retrieveDoujin();
+  }
 
   void _copyCodeToClipboard() async {
     await Clipboard.setData(
@@ -36,24 +40,26 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
     );
   }
 
+  void _bookmarkDoujin() async {
+    var doujinProvider = DoujinProvider();
+    setState(() {
+      doujin.isBookmarked = !doujin.isBookmarked;
+    });
+    await doujinProvider.update(doujin.id, doujin);
+  }
+
   void _retrieveDoujin() {
     setState(() {
       isLoading = true;
     });
     var doujinProvider = DoujinProvider();
 
-    doujinProvider.retrieve(widget.args.id).then((value) {
+    doujinProvider.retrieve(widget.id).then((value) {
       setState(() {
         doujin = value;
         isLoading = false;
       });
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _retrieveDoujin();
   }
 
   void _showDeleteConfirmDialog() async {
@@ -93,9 +99,10 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
     );
     if (result! >= 0) {
       final doujinProvider = DoujinProvider();
-      doujin.rating = result;
+      setState(() {
+        doujin.rating = result;
+      });
       await doujinProvider.update(doujin.id, doujin);
-      _retrieveDoujin();
       final homePageState = Constants.HOME_KEY.currentState;
       homePageState?.retrieveDoujins();
     }
@@ -180,6 +187,15 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                          child: Text(
+                            doujin.title.pretty,
+                            style: Theme.of(context).textTheme.headline6,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(height: 8),
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
@@ -285,10 +301,8 @@ class _DoujinDetailsPageState extends State<DoujinDetailsPage> {
                                   ),
                                   child: IconButton(
                                     color: Colors.white,
-                                    onPressed: () {
-                                      print('Bookmark');
-                                    },
-                                    icon: Icon(Icons.bookmark_border),
+                                    onPressed: _bookmarkDoujin,
+                                    icon: Icon(doujin.isBookmarked ? Icons.bookmark_added : Icons.bookmark_border),
                                   ),
                                 ),
                               ),

@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:suwariyomi/classes/doujin.dart';
 
-import '../doujin_details/doujin_details_view_args.dart';
-
 class DoujinCard extends StatelessWidget {
   DoujinCard(
-    this.doujin,
-    this.callback, {
+    this.doujin, {
     Key? key,
   }) : super(key: key);
 
   final Doujin doujin;
-  final Function callback;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +70,7 @@ class DoujinCard extends StatelessWidget {
       onTap: () => {
         Navigator.of(context).pushNamed(
           '/details',
-          arguments: DoujinDetailsViewArgs(doujin.id, callback),
+          arguments: doujin.id,
         )
       },
     );

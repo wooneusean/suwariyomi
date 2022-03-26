@@ -12,6 +12,7 @@ class Doujin {
   late List<Tag> tags;
   late int uploadDate;
   late int numPages;
+  late bool isBookmarked;
 
   Doujin({
     required this.dateAdded,
@@ -23,6 +24,8 @@ class Doujin {
     required this.title,
     required this.tags,
     required this.uploadDate,
+    required this.numPages,
+    required this.isBookmarked,
   });
 
   Doujin.fromJson(Map<dynamic, dynamic> json) {
@@ -45,6 +48,7 @@ class Doujin {
     }
     uploadDate = json['upload_date'];
     numPages = json['num_pages'] ?? 0;
+    isBookmarked = json['is_bookmarked'] ?? false;
   }
 
   Map<dynamic, dynamic> toJson() {
@@ -59,6 +63,7 @@ class Doujin {
     data['tags'] = this.tags.map((v) => v.toJson()).toList();
     data['upload_date'] = this.uploadDate;
     data['num_pages'] = this.numPages;
+    data['is_bookmarked'] = this.isBookmarked;
     return data;
   }
 

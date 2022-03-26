@@ -36,8 +36,10 @@ class LibraryPageState extends State<LibraryPage> {
             isLoading = false;
           });
         } else {
-          doujins = null;
-          isLoading = false;
+          setState(() {
+            doujins = null;
+            isLoading = false;
+          });
         }
       } else {
         // Debug App
@@ -49,11 +51,10 @@ class LibraryPageState extends State<LibraryPage> {
         } else {
           // Delete db
           await doujinProvider.deleteDb();
-          await seedDb().then((value) {
-            setState(() {
-              doujins = value;
-              isLoading = false;
-            });
+          final value = await seedDb();
+          setState(() {
+            doujins = value;
+            isLoading = false;
           });
         }
       }
@@ -91,9 +92,7 @@ class LibraryPageState extends State<LibraryPage> {
 
     data.map((e) => debugPrint(e.toString()));
 
-    doujinProvider
-        .retrieveAll()
-        .then((value) => {debugPrint(value.length.toString())});
+    doujinProvider.retrieveAll().then((value) => {debugPrint(value.length.toString())});
 
     return data;
   }
@@ -145,31 +144,31 @@ class LibraryPageState extends State<LibraryPage> {
               ?
               // If Doujins does not exist
               Padding(
-                padding: const EdgeInsets.all(64.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Your library is empty',
-                      style: TextStyle(
-                        fontSize: 23.0,
-                        color: Colors.grey.withOpacity(0.8),
-                        fontWeight: FontWeight.bold,
+                  padding: const EdgeInsets.all(64.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Your library is empty',
+                        style: TextStyle(
+                          fontSize: 23.0,
+                          color: Colors.grey.withOpacity(0.8),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Text(
-                      'Add one by pressing the \"\+\" button on the bottom right',
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.grey.withOpacity(0.5),
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
-                ),
-              )
+                      Text(
+                        'Add one by pressing the \"\+\" button on the bottom right',
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.grey.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                )
               :
               // If Doujins exist
               GridView.builder(
@@ -178,15 +177,14 @@ class LibraryPageState extends State<LibraryPage> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 8.0,
                     crossAxisSpacing: 10.0,
-                    childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 1.3),
+                    childAspectRatio: MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.3),
                   ),
                   itemCount: doujins?.length ?? 0,
                   itemBuilder: (context, index) {
                     final item = doujins?[index];
 
                     return GridTile(
-                      child: DoujinCard(item!, retrieveDoujins),
+                      child: DoujinCard(item!),
                     );
                   },
                 ),
@@ -194,9 +192,7 @@ class LibraryPageState extends State<LibraryPage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => AddDialog(
-              callback: retrieveDoujins,
-            ),
+            builder: (context) => AddDialog(),
           );
         },
         tooltip: 'Increment',
