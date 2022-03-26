@@ -1,4 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
+
+int integerValueOf(dynamic value) {
+  if (value is double) {
+    return value.round();
+  } else if (value is String) {
+    return int.parse(value);
+  } else {
+    return value;
+  }
+}
 
 class Doujin {
   late int dateAdded;
@@ -10,6 +21,8 @@ class Doujin {
   late Title title;
   late List<Tag> tags;
   late int uploadDate;
+  late int numPages;
+  late bool isBookmarked;
 
   Doujin({
     required this.dateAdded,
@@ -21,6 +34,8 @@ class Doujin {
     required this.title,
     required this.tags,
     required this.uploadDate,
+    required this.numPages,
+    required this.isBookmarked,
   });
 
   Doujin.fromJson(Map<dynamic, dynamic> json) {
@@ -32,8 +47,8 @@ class Doujin {
             : null;
     scanlator = json['scanlator'];
     rating = json['rating'] ?? 0;
-    mediaId = json['media_id'];
-    id = json['id'];
+    mediaId = json['media_id'].toString();
+    id = integerValueOf(json['id']);
     title = new Title.fromJson(json['title']);
     if (json['tags'] != null) {
       tags = <Tag>[];
@@ -42,6 +57,8 @@ class Doujin {
       });
     }
     uploadDate = json['upload_date'];
+    numPages = json['num_pages'] ?? 0;
+    isBookmarked = json['is_bookmarked'] ?? false;
   }
 
   Map<dynamic, dynamic> toJson() {
@@ -55,6 +72,8 @@ class Doujin {
     data['title'] = this.title.toJson();
     data['tags'] = this.tags.map((v) => v.toJson()).toList();
     data['upload_date'] = this.uploadDate;
+    data['num_pages'] = this.numPages;
+    data['is_bookmarked'] = this.isBookmarked;
     return data;
   }
 
@@ -62,6 +81,28 @@ class Doujin {
     return kDebugMode
         ? 'https://via.placeholder.com/250x350'
         : 'https://t.nhentai.net/galleries/$mediaId/cover.${cover == 'j' ? 'jpg' : 'png'}';
+  }
+
+  String getDateAdded() {
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
+    final String formatted = formatter.format(DateTime.fromMillisecondsSinceEpoch(dateAdded));
+    return formatted;
+  }
+
+  List<String?> getArtists() {
+    return tags.where((element) => element.type == "artist").map((e) => e.name).toList();
+  }
+
+  List<String?> getTags() {
+    return tags.where((element) => element.type == "tag").map((e) => e.name).toList();
+  }
+
+  List<String> getGroups() {
+    return tags.where((element) => element.type == "group").map((e) => e.name).toList();
+  }
+
+  List<String> getLanguages() {
+    return tags.where((element) => element.type == "language").map((e) => e.name).toList();
   }
 
   @override
@@ -76,6 +117,7 @@ class Doujin {
         '\n\ttitle: $title, '
         '\n\ttags: $tags, '
         '\n\tuploadDate: $uploadDate'
+        '\n\tpages: $numPages'
         '\n}';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:suwariyomi/constants.dart';
+import 'package:suwariyomi/providers/doujin_provider.dart';
 
 import 'app_router.dart';
 
@@ -15,6 +16,8 @@ void main() async {
   );
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   SystemChrome.setPreferredOrientations(
     [

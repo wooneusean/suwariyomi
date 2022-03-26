@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:suwariyomi/constants.dart';
 
 import '../../../helpers/doujin_helper.dart';
 import '../../../providers/doujin_provider.dart';
 
 class AddDialog extends StatefulWidget {
-  final Function callback;
-
-  const AddDialog({Key? key, required this.callback}) : super(key: key);
+  const AddDialog({Key? key}) : super(key: key);
 
   @override
   State<AddDialog> createState() => _AddDialogState();
@@ -99,7 +98,8 @@ class _AddDialogState extends State<AddDialog> {
                     setState(() {
                       this.isButtonActive = true;
                     });
-                    widget.callback();
+                    final homePageState = Constants.HOME_KEY.currentState;
+                    homePageState?.retrieveDoujins();
                   }
                 }
               : null,
