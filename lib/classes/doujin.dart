@@ -1,6 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+int integerValueOf(dynamic value) {
+  if (value is double) {
+    return value.round();
+  } else if (value is String) {
+    return int.parse(value);
+  } else {
+    return value;
+  }
+}
+
 class Doujin {
   late int dateAdded;
   late String cover;
@@ -37,8 +47,8 @@ class Doujin {
             : null;
     scanlator = json['scanlator'];
     rating = json['rating'] ?? 0;
-    mediaId = json['media_id'];
-    id = json['id'];
+    mediaId = json['media_id'].toString();
+    id = integerValueOf(json['id']);
     title = new Title.fromJson(json['title']);
     if (json['tags'] != null) {
       tags = <Tag>[];
