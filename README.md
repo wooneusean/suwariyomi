@@ -1,4 +1,5 @@
 # Suwariyomi
+### This project is abandoned because the site we scrape from has implemented cloudflare.
 
 Suwariyomi means to sit and read. Opposite of Tachiyomi which is to stand and read.
 
